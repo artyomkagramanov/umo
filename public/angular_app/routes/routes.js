@@ -13,6 +13,16 @@ angular.module('umo').config(['$routeProvider',
         templateUrl: 'angular_app/templates/auth/register.html',
         controller: 'AuthController'
       }).
+      when('/calculate', {
+        templateUrl: 'angular_app/templates/calculate/index.html',
+        controller: 'CalculateController',
+        controllerAs: 'calculate'
+      }).
+      when('/calculate/create', {
+        templateUrl: 'angular_app/templates/calculate/create.html',
+        controller: 'CalculateController',
+        controllerAs: 'calculate'
+      }).
 
       otherwise({
         redirectTo: '/'

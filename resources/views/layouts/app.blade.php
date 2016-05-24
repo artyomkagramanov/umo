@@ -77,10 +77,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/angular_app/app.js"></script>
     <script src="/angular_app/routes/routes.js"></script>
     <script src="/angular_app/controllers/AuthController.js"></script>
     <script src="/angular_app/controllers/MainController.js"></script>
+    <script src="/angular_app/controllers/CalculateController.js"></script>
     <script src="https://code.angularjs.org/1.4.5/angular-route.js"> </script>
 
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}

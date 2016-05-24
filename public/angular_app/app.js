@@ -1,2 +1,2 @@
 //Define an angular module for our app
-var app = angular.module('umo', ['ngRoute']);
+var app = angular.module('umo', ['ngRoute', 'ui.router']);
