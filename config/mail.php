@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+    'from' => ['address' => 'support@umo.com', 'name' => "UMO"],
 
     /*
     |--------------------------------------------------------------------------
@@ -107,6 +107,5 @@ return [
     |
     */
 
-    'sendmail' => '/usr/sbin/sendmail -bs',
-
+    'sendmail' => '/usr/sbin/sendmail -bs'
 ];

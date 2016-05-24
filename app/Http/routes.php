@@ -19,6 +19,9 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+
 Route::group(['middleware' => ['web'] , 'prefix' => 'api'], function () {
    Route::post('calculate', 'CalculateController@store');
+   Route::post('register', 'UserController@register');
 });
+

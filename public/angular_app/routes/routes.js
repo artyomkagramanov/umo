@@ -11,7 +11,8 @@ angular.module('umo').config(['$routeProvider',
       }).
       when('/register', {
         templateUrl: 'angular_app/templates/auth/register.html',
-        controller: 'AuthController'
+        controller: 'AuthController',
+        controllerAs: 'auth'
       }).
       when('/calculate', {
         templateUrl: 'angular_app/templates/calculate/index.html',

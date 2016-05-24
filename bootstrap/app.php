@@ -41,6 +41,11 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->singleton(
+    App\Contracts\UserServiceInterface::class,
+    App\Services\UserService::class
+);
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
