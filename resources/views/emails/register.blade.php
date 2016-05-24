@@ -1,0 +1,1 @@
+<p>Please follow this <a href="http://umo.dev/#/user-register/{{base64_encode($email)}}">link</a> to register your account!<br>

@@ -1,13 +1,22 @@
 angular.module('umo')
   .controller('AuthController', AuthController)
 
-  AuthController.$inject = ['$http'];
+AuthController.$inject = ['$http', '$scope'];
 
-    function AuthController($http) {
+function AuthController($http, $scope) {
 
-        
-        function init() {
-        }
+	var vm = this;
+	vm.register = register;
+	vm.inputs = {};
 
-        init();
+    function init() {
+    }
+
+    function register() {
+    	$http.post("api/register", vm.inputs).then(function(data){
+    		console.log(data);
+    	});
+    }
+
+    init();
 };
