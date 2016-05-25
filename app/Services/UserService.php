@@ -19,7 +19,7 @@ class UserService implements UserServiceInterface {
 		$email = $inputs['email'];
 		Mail::send('emails.register', ['email' => $email], function ($message) use ($email)
 		{
-			$message->from('support@umo.dev', 'Umo');
+			$message->from(env('FROM_EMAIL', 'vadim.strelov@gmail.com'));
 		    $message->to($email);
 		    $message->subject('Registration link');
 		});

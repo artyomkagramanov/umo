@@ -1,1 +1,1 @@
-<p>Please follow this <a href="http://umo.dev/#/register/{{base64_encode($email)}}">link</a> to register your account!<br>
+<p>Please follow this <a href="{{env('PROTOCOL').env('HOST')}}/#/register/{{base64_encode($email)}}">link</a> to register your account!<br>
