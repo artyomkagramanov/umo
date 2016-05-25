@@ -19,9 +19,9 @@ class UserService implements UserServiceInterface {
 		$email = $inputs['email'];
 		Mail::send('emails.register', ['email' => $email], function ($message) use ($email)
 		{
-			$message->from(env('FROM_EMAIL', 'vadim.strelov@gmail.com'));
+			$message->from(env('FROM_EMAIL', 'support@wirelessinfrastructuredata.com', 'UMS support'));
 		    $message->to($email);
-		    $message->subject('Registration link');
+		    $message->subject('Welcome to UMS.');
 		});
 		if($this->registration->where('email', $email)->exists()) {
 			return true;
