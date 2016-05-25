@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Contracts\Auth\Guard;
 use App\Contracts\UserServiceInterface;
-// use App\Http\Requests\Request;
+use App\Http\Requests\RegistrationRequest;
+use App\Http\Requests\LoginRequest;
 
 
 class UserController extends Controller
@@ -16,10 +17,11 @@ class UserController extends Controller
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    public function __construct(Guard $auth)
+    {
+        $this->auth = $auth;
+        // $this->middleware('auth');
+    }
 
     /**
      * Display a listing of the resource.
@@ -97,12 +99,50 @@ class UserController extends Controller
         //
     }
 
-    public function register(Request $request, UserServiceInterface $userService)
+    public function preRegister(Request $request, UserServiceInterface $userService)
     {
-    	// return response()->json(['status' => 'error', 'message' => $request->all()]);
-    	if($userService->registerUser($request->all())) {
+        if($userService->checkIfExists($request->get('email'))) {
+            return response()->json(['status' => 'error', 'message' => 'This email already in use.']);
+        }
+    	if($userService->createPreRegistrationRecord($request->all())) {
     		return response()->json(['status' => 'success', 'message' => 'Please check your email.']);
     	}
     	return response()->json(['status' => 'error', 'message' => 'Something went wrong please try again.']);
+    }
+
+    public function registerCheck(Request $request, UserServiceInterface $userService)
+    {
+        $res = $userService->checkRegistrationEmail($request->get('email'));
+        if($res !== true) {
+            return response()->json(['status' => 'error', 'message' => $res]);            
+        }
+        return response()->json(['status' => 'success', 'resource' => ['email' => base64_decode($request->get('email'))]]);
+    }
+
+    public function register(RegistrationRequest $request, UserServiceInterface $userService)
+    {
+        $user = $userService->registerNewUser($request->all());
+        $userService->deletePreRegistrationRecord($request->get('email'));
+        $this->auth->login( $user );
+        return response()->json(['status' => 'success', 'resource' => ['user' => $user]]);
+    }
+
+    public function getAuthUser()
+    {
+        return response()->json(['status' => 'success', 'resource' => ['user' => $this->auth->user()]]);
+    }
+
+    public function logout()
+    {
+        $this->auth->logout();
+        return response()->json(['status' => 'success']);
+    }
+
+    public function doLogin(LoginRequest $request)
+    {
+        if($this->auth->attempt($request->all())){
+            return response()->json(['status' => 'success', 'resource' => ['user' => $this->auth->user()]]);
+        }
+        return response()->json(['status' => 'error', 'message' => 'Wrong credentials.']);
     }
 }

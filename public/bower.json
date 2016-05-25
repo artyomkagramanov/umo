@@ -14,5 +14,7 @@
   "dependencies": {
     "angular": "^1.5.5",
     "bootstrap": "^3.3.6",
+    "angular-inform": "~0.0.18",
+    "angular-animate": "^1.5.5"
   }
 }

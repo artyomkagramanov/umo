@@ -46,6 +46,11 @@ $app->singleton(
     App\Services\UserService::class
 );
 
+$app->singleton(
+    App\Contracts\CalculateServiceInterface::class,
+    App\Services\CalculateService::class
+);
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

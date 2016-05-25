@@ -2,40 +2,59 @@
 
 
 use App\Contracts\UserServiceInterface;
-use Config;
 use Mail;
+use App\Models\Registration;
+use App\User;
 
 class UserService implements UserServiceInterface {
 
-	public function registerUser( $inputs )
+	public function __construct(Registration $registration, User $user)
+	{
+		$this->registration = $registration;
+		$this->user = $user;
+	}
+
+	public function createPreRegistrationRecord( $inputs )
 	{
 		$email = $inputs['email'];
-		// return true;
-		// $client = new PostmarkClient( Config::get( 'mail.postmark_api_key' ) );
-
-		// $sendResult = $client->sendEmail(
-		// 	"support@umo.com",
-		// 	$inputs['email'],
-		// 	"Registration link",
-		// 	"Please follow this <a href='http://umo.dev/#/user-register/".json_encode($inputs['email'])."'>link</a> to register"
-		// );
 		Mail::send('emails.register', ['email' => $email], function ($message) use ($email)
 		{
 			$message->from('support@umo.dev', 'Umo');
 		    $message->to($email);
 		    $message->subject('Registration link');
 		});
+		if($this->registration->where('email', $email)->exists()) {
+			return true;
+		}
+		return $this->registration->create(['email' => $email]);
+	}
 
-		// $status = Postmark\Mail::compose( Config::get( 'mail.postmark_api_key' ) )
-		// 	    ->from( 'support@umo.com', 'UMO Support' )
-		// 	    ->addTo( $inputs['email'] )
-		// 	    ->subject( "Registration link" )
-		// 	    ->messageHtml(
-		// 	    	"Please follow this <a href='http://umo.dev/#/user-register/".json_encode($inputs['email'])."'>link</a> to register"
-		// 	    )->send();
-		
-		// dd($status);
+	public function checkRegistrationEmail($b_64_email)
+	{
+		$email = base64_decode($b_64_email);
+		$instance = $this->registration->where('email', $email)->first();
+		if(!$instance) return 'The email does not exist.';
+		return true;
+	}
 
-		return '';
+	public function registerNewUser($inputs)
+	{
+		$inputs['password'] = bcrypt($inputs['password']);
+		return $this->user->create($inputs);
+	}
+
+	public function deletePreRegistrationRecord($email)
+	{
+		return $this->registration->where('email', $email)->delete();
+	}
+
+	public function checkIfExists($email)
+	{
+		return $this->user->where('email', $email)->exists();
+	}
+
+	public function getByEmail($email)
+	{
+		return $this->user->where('email', $email)->first();
 	}
 }

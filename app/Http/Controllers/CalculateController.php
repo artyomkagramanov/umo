@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Contracts\CalculateServiceInterface;
 
 class CalculateController extends Controller
 {
@@ -13,9 +14,16 @@ class CalculateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    
+    public function __construct() 
     {
-        //
+        $this->middleware('auth');
+    }
+
+    public function index(CalculateServiceInterface $calculateService)
+    {
+        $res = $calculateService->getAll();
+        return response()->json(['status' => 'success', 'resource' => $res]);
     }
 
     /**
@@ -34,9 +42,12 @@ class CalculateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, CalculateServiceInterface $calculateService)
     {
-        dd($request->all());
+        if($calculateService->create($request->all())) {
+            return response()->json(['status' => 'success', 'resource' => $calculateService->getAll()]);
+        }
+        return response()->json(['status' => 'error', 'message' => 'Error']);
     }
 
     /**
@@ -45,9 +56,9 @@ class CalculateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, CalculateServiceInterface $calculateService)
     {
-        //
+        return response()->json(['status' => 'success', 'resource' => $calculateService->getById($id)]);
     }
 
     /**
@@ -68,9 +79,12 @@ class CalculateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, CalculateServiceInterface $calculateService)
     {
-        //
+        if($calculateService->update($id, $request->all())) {
+            return response()->json(['status' => 'success', 'resource' => $calculateService->getAll()]);
+        }
+        return response()->json(['status' => 'error', 'message' => 'Error']);
     }
 
     /**
@@ -79,8 +93,11 @@ class CalculateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, CalculateServiceInterface $calculateService)
     {
-        //
+        if($calculateService->destroy($id)) {
+            return response()->json(['status' => 'success', 'resource' => $calculateService->getAll()]);
+        }
+        return response()->json(['status' => 'error', 'message' => 'Error']);
     }
 }
